@@ -1,0 +1,41 @@
+---
+layout: base.njk
+---
+{%- set t = ui[lang] -%}
+{%- set sec = section | findSection(lang) -%}
+{%- set list = collections["articles_" + lang] | bySection(section) -%}
+<header class="banner cat-{{ section }}" style="--img: url('/assets/img/{{ section }}.webp')">
+  <div class="banner-text">
+    <h1>{{ sec.title }}</h1>
+    <p class="lead">{{ sec.intro }}</p>
+  </div>
+</header>
+
+{% if section == "support" %}{% include "emergency.njk" %}{% endif %}
+
+<div class="prose">{{ content | safe }}</div>
+
+{%- set topicList = list | topicsOf(lang) %}
+{%- if topicList.length %}
+<nav class="chips" aria-label="{{ t.topics }}">
+  <h2>{{ t.topics }}</h2>
+  <ul>
+    {%- for name in topicList %}
+    <li><a href="{{ name | topicUrl(lang) }}">{{ name }}</a></li>
+    {%- endfor %}
+  </ul>
+</nav>
+{%- endif %}
+
+<section aria-labelledby="all">
+  <h2 id="all">{{ t.allArticles }}</h2>
+  {%- if list.length %}
+  <ul class="grid">
+    {%- for a in list %}{% include "article-card.njk" %}{% endfor %}
+  </ul>
+  {%- else %}
+  <p>{{ t.noArticles }}</p>
+  {%- endif %}
+</section>
+
+<aside class="notice"><p>{{ t.disclaimer }}</p></aside>

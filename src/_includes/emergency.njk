@@ -1,0 +1,15 @@
+<section id="spesho" class="emergency" aria-labelledby="spesho-h">
+  <h2 id="spesho-h">{{ t.emergencyTitle }}</h2>
+  <ul class="emergency-list">
+    {%- for e in site.emergency %}
+    <li>
+      <a class="tel" href="tel:{{ e.tel }}">{{ e.number }}</a>
+      <div>
+        <strong>{{ e[lang].name }}</strong>
+        <p>{{ e[lang].desc }}</p>
+        <p class="meta"><a href="{{ e.source }}" rel="noopener">{{ t.sourceLink }}</a> · {{ t.verifiedOn }} {{ e.verified | fmtDate(lang) }}</p>
+      </div>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>

@@ -1,0 +1,11 @@
+---
+layout: base.njk
+---
+{%- set t = ui[lang] -%}
+{%- set list = collections["articles_" + lang] | withTopic(topic.name) -%}
+<h1>{{ topic.name }}</h1>
+<p class="lead">{{ topic.count }} {{ t.articlesCount }}</p>
+<ul class="grid">
+  {%- for a in list %}{% include "article-card.njk" %}{% endfor %}
+</ul>
+<aside class="notice"><p>{{ t.disclaimer }}</p></aside>

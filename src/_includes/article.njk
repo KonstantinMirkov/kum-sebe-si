@@ -1,0 +1,80 @@
+---
+layout: base.njk
+---
+{%- set t = ui[lang] -%}
+{%- set sec = section | findSection(lang) -%}
+<article class="cat-{{ section }}">
+  <div class="article-img" style="--img: url('/assets/img/{{ section }}.webp')" role="img" aria-label=""></div>
+  <nav class="crumbs" aria-label="{{ t.breadcrumb }}">
+    <a href="/{{ lang }}/">{{ t.home }}</a> › <a href="{{ sec.url }}">{{ sec.title }}</a>
+  </nav>
+
+  <header>
+    <h1>{{ title }}</h1>
+    {%- if description %}<p class="lead">{{ description }}</p>{% endif %}
+    <p class="meta">
+      {{ t.published }}: <time datetime="{{ published | isoDate }}">{{ published | fmtDate(lang) }}</time>
+      {%- if updated %} · {{ t.updated }}: <time datetime="{{ updated | isoDate }}">{{ updated | fmtDate(lang) }}</time>{% endif %}
+      · {{ content | readingTime }} {{ t.minRead }}
+    </p>
+    {%- if reviewedBy %}
+    <p class="meta">{{ t.reviewedBy }}: {{ reviewedBy }}</p>
+    {%- else %}
+    <p class="notice small">{{ t.unreviewed }}</p>
+    {%- endif %}
+  </header>
+
+  {%- if contentWarning %}
+  <div class="cw" id="cw-gate" hidden>
+    <h2>{{ t.cwTitle }}</h2>
+    <p>{{ t.cwText }} <strong>{{ contentWarning }}</strong></p>
+    <p>{{ t.cwTip }}</p>
+    <p>
+      <button type="button" id="cw-continue">{{ t.cwContinue }}</button>
+      <a class="button secondary" href="{{ sec.url }}">{{ t.cwLeave }}</a>
+    </p>
+  </div>
+  {%- endif %}
+
+  <div class="prose" id="article-body"{% if contentWarning %} data-cw{% endif %}>
+    {%- if contentWarning %}
+    <p class="notice small"><strong>{{ t.cwTitle }}:</strong> {{ contentWarning }}</p>
+    {%- endif %}
+    {{ content | safe }}
+  </div>
+
+  <aside class="notice"><h2>{{ t.disclaimerTitle }}</h2><p>{{ t.disclaimer }}</p></aside>
+
+  {%- if sources and sources.length %}
+  <section aria-labelledby="src">
+    <h2 id="src">{{ t.sources }}</h2>
+    <ol class="sources">
+      {%- for s in sources %}
+      <li><a href="{{ s.url }}" rel="noopener">{{ s.title }}</a>{% if s.publisher %} – {{ s.publisher }}{% endif %}</li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
+
+  {%- set rel = collections["articles_" + lang] | relatedArticles(page.url, related, topics, section) %}
+  {%- if rel.length %}
+  <section aria-labelledby="rel">
+    <h2 id="rel">{{ t.related }}</h2>
+    <ul class="grid">
+      {%- for a in rel %}{% include "article-card.njk" %}{% endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  {%- if topics and topics.length %}
+  <nav class="chips" aria-label="{{ t.topics }}">
+    <ul>{% for name in topics %}<li><a href="{{ name | topicUrl(lang) }}">{{ name }}</a></li>{% endfor %}</ul>
+  </nav>
+  {%- endif %}
+
+  <section class="cta">
+    <h2>{{ t.helpTitle }}</h2>
+    <p>{{ t.helpText }}</p>
+    <a class="button" href="{{ (sections[lang] | last).url }}">{{ t.helpBtn }}</a>
+  </section>
+</article>

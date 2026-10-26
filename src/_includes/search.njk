@@ -1,0 +1,17 @@
+---
+layout: base.njk
+---
+{%- set t = ui[lang] -%}
+<h1>{{ t.search }}</h1>
+<form class="search" id="search-form" action="" method="get" role="search"
+      data-index="/{{ lang }}/search.json"
+      data-none="{{ t.searchNone }}" data-count="{{ t.searchCount }}" data-hint="{{ t.searchHint }}"
+      data-loading="{{ t.searchLoading }}" data-error="{{ t.searchError }}" data-cw="{{ t.cwTitle }}">
+  <label for="q">{{ t.searchLabel }}</label>
+  <div class="search-row">
+    <input id="q" name="q" type="search" placeholder="{{ t.searchPlaceholder }}" autocomplete="off">
+    <button type="submit">{{ t.searchBtn }}</button>
+  </div>
+</form>
+<p id="search-status" role="status" aria-live="polite">{{ t.searchHint }}</p>
+<ul class="grid" id="search-results"></ul>

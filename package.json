@@ -1,0 +1,21 @@
+{
+  "name": "psihichno-zdrave",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Двуезичен образователен сайт за психично здраве (Eleventy + Decap CMS)",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "cms": "decap-server"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "decap-server": "^3.1.2",
+    "sharp": "^0.35.5"
+  },
+  "dependencies": {
+    "@fontsource-variable/lora": "^5.3.0",
+    "@fontsource-variable/nunito": "^5.3.0"
+  }
+}

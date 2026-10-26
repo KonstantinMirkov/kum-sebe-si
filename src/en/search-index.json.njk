@@ -1,0 +1,7 @@
+---
+permalink: /en/search.json
+eleventyExcludeFromCollections: true
+eleventyImport:
+  collections: ["articles_en"]
+---
+{{ collections.articles_en | searchIndex("en") | safe }}

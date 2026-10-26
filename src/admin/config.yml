@@ -1,0 +1,92 @@
+# Администраторски панел (Decap CMS).
+# Локално: стартирайте `npm run cms` и `npm start`, после отворете http://localhost:8080/admin/
+# За публикуване сменете backend с вашия (github/gitlab/git-gateway) – вижте README.md
+local_backend: true
+backend:
+  name: github
+  repo: ВАШИЯТ-АКАУНТ/psihichno-zdrave   # <- сменете
+  branch: main
+
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: articles_bg
+    label: "Статии (български)"
+    label_singular: "статия"
+    folder: "src/articles/bg"
+    create: true
+    extension: md
+    slug: "{{fields.translationKey}}"
+    summary: "{{title}} · {{section}}"
+    sortable_fields: ["updated", "published", "title"]
+    fields:
+      - { label: "Заглавие", name: "title", widget: "string" }
+      - { label: "Кратко описание (за търсене и карти)", name: "description", widget: "text" }
+      - { label: "Идентификатор (латиница, еднакъв за BG и EN версията)", name: "translationKey", widget: "string", pattern: ["^[a-z0-9-]+$", "Само малки латински букви, цифри и тирета"] }
+      - { label: "Език", name: "lang", widget: "hidden", default: "bg" }
+      - label: "Раздел"
+        name: "section"
+        widget: "select"
+        options:
+          - { label: "Психично здраве и състояния", value: "conditions" }
+          - { label: "Травма и възстановяване", value: "trauma" }
+          - { label: "Терапевтични подходи", value: "therapies" }
+          - { label: "Потърси подкрепа", value: "support" }
+      - { label: "Теми (тагове)", name: "topics", widget: "list", required: false, hint: "Пишете еднакво, за да се групират (напр. Тревожност)" }
+      - { label: "Публикувано на", name: "published", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "Последна актуализация", name: "updated", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }
+      - { label: "Прегледано от (име и квалификация)", name: "reviewedBy", widget: "string", required: false, hint: "Оставете празно, ако не е прегледано – ще се покаже бележка към читателите" }
+      - { label: "Предупреждение за съдържание", name: "contentWarning", widget: "string", required: false, hint: "Напр. насилие, загуба. Ако е попълнено, читателят трябва да потвърди, преди да чете" }
+      - { label: "Препоръчана на началната страница", name: "featured", widget: "boolean", default: false, required: false }
+      - { label: "Чернова (не се публикува)", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Свързани статии (идентификатори)", name: "related", widget: "list", required: false }
+      - label: "Източници"
+        name: "sources"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Заглавие", name: "title", widget: "string" }
+          - { label: "Връзка", name: "url", widget: "string" }
+          - { label: "Издател/автор", name: "publisher", widget: "string", required: false }
+      - { label: "Текст", name: "body", widget: "markdown" }
+
+  - name: articles_en
+    label: "Articles (English)"
+    label_singular: "article"
+    folder: "src/articles/en"
+    create: true
+    extension: md
+    slug: "{{fields.translationKey}}"
+    summary: "{{title}} · {{section}}"
+    sortable_fields: ["updated", "published", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Short description", name: "description", widget: "text" }
+      - { label: "Identifier (same as Bulgarian version)", name: "translationKey", widget: "string", pattern: ["^[a-z0-9-]+$", "Lowercase latin letters, digits, dashes"] }
+      - { label: "Language", name: "lang", widget: "hidden", default: "en" }
+      - label: "Section"
+        name: "section"
+        widget: "select"
+        options:
+          - { label: "Mental health & conditions", value: "conditions" }
+          - { label: "Trauma & recovery", value: "trauma" }
+          - { label: "Therapeutic approaches", value: "therapies" }
+          - { label: "Find support", value: "support" }
+      - { label: "Topics (tags)", name: "topics", widget: "list", required: false }
+      - { label: "Published", name: "published", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "Last updated", name: "updated", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }
+      - { label: "Reviewed by", name: "reviewedBy", widget: "string", required: false }
+      - { label: "Content warning", name: "contentWarning", widget: "string", required: false }
+      - { label: "Featured on home page", name: "featured", widget: "boolean", default: false, required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Related articles (identifiers)", name: "related", widget: "list", required: false }
+      - label: "Sources"
+        name: "sources"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "URL", name: "url", widget: "string" }
+          - { label: "Publisher/author", name: "publisher", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }

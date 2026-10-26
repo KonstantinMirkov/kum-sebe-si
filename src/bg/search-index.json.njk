@@ -1,0 +1,7 @@
+---
+permalink: /bg/search.json
+eleventyExcludeFromCollections: true
+eleventyImport:
+  collections: ["articles_bg"]
+---
+{{ collections.articles_bg | searchIndex("bg") | safe }}

@@ -1,0 +1,9 @@
+<li class="card cat-{{ a.data.section }}">
+  <p class="card-tag">{{ (a.data.section | findSection(lang)).short }}</p>
+  <h3><a href="{{ a.url }}">{{ a.data.title }}</a></h3>
+  {%- if a.data.description %}<p>{{ a.data.description }}</p>{% endif %}
+  <p class="meta">
+    {{ (a.data.updated or a.data.published) | fmtDate(lang) }}
+    {%- if a.data.contentWarning %} · <span class="badge">{{ t.cwTitle }}</span>{% endif %}
+  </p>
+</li>

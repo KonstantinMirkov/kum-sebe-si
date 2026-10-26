@@ -1,0 +1,69 @@
+---
+layout: base.njk
+---
+{%- set t = ui[lang] -%}
+{%- set secs = sections[lang] -%}
+{%- set list = collections["articles_" + lang] -%}
+{%- set searchUrl = "/" + lang + "/" + ("tarsene" if lang == "bg" else "search") + "/" -%}
+<section class="hero">
+  <div class="hero-text">
+    <p class="kicker">{{ t.kicker }}</p>
+    <h1>{{ t.h1 }}</h1>
+    <p class="hero-sub">{{ t.heroSub }}</p>
+    <form class="search" action="{{ searchUrl }}" method="get" role="search">
+      <label for="q">{{ t.searchLabel }}</label>
+      <div class="search-row">
+        <input id="q" name="q" type="search" placeholder="{{ t.searchPlaceholder }}" autocomplete="off">
+        <button type="submit">{{ t.searchBtn }}</button>
+      </div>
+    </form>
+  </div>
+  <div class="hero-img">
+    <img src="/assets/img/hero.webp" alt="" width="640" height="800" fetchpriority="high">
+  </div>
+</section>
+
+<section aria-labelledby="cats">
+  <h2 id="cats">{{ t.categories }}</h2>
+  <ul class="grid grid-cats">
+    {%- for s in secs %}
+    <li class="card card-cat cat-{{ s.key }}">
+      <img src="/assets/img/{{ s.key }}.webp" alt="" loading="lazy" width="700" height="440">
+      <div class="card-body"><h3><a href="{{ s.url }}">{{ s.title }}</a></h3><p>{{ s.intro | truncate(120) }}</p></div>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+
+{%- set topicList = collections["topicPages_" + lang] %}
+{%- if topicList.length %}
+<section class="chips" aria-labelledby="pop">
+  <h2 id="pop">{{ t.popular }}</h2>
+  <ul>
+    {%- for tp in topicList %}
+    <li><a href="{{ tp.url }}">{{ tp.name }}</a></li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
+
+{%- set feat = list | featured %}
+{%- if feat.length %}
+<section aria-labelledby="feat">
+  <h2 id="feat">{{ t.featured }}</h2>
+  <ul class="grid">
+    {%- for a in feat %}{% include "article-card.njk" %}{% endfor %}
+  </ul>
+</section>
+{%- endif %}
+
+<section class="cta">
+  <h2>{{ t.helpTitle }}</h2>
+  <p>{{ t.helpText }}</p>
+  <a class="button" href="{{ (secs | last).url }}">{{ t.helpBtn }}</a>
+</section>
+
+<aside class="notice" aria-labelledby="disc">
+  <h2 id="disc">{{ t.disclaimerTitle }}</h2>
+  <p>{{ t.disclaimer }}</p>
+</aside>
